@@ -22,8 +22,53 @@ class MyHelper extends JFrame {
     final Font font = new Font("Verdana", Font.PLAIN, 10);
 
     MyHelper() {
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+        frame.addWindowListener(new WindowListener() {
+            @Override
+            public void windowOpened(WindowEvent e) {
 
+            }
+
+            @Override
+            public void windowClosing(WindowEvent e) {
+                Object[] options = { "Да", "Нет!" };
+                int n = JOptionPane
+                        .showOptionDialog(e.getWindow(), "Вы закончили работу?",
+                                "Подтверждение окончания работы", JOptionPane.YES_NO_OPTION,
+                                JOptionPane.QUESTION_MESSAGE, null, options,
+                                options[0]);
+                if (n == 0) {
+                    fillingFileFromBooksList();
+                    e.getWindow().setVisible(false);
+                    System.exit(0);
+                }
+            }
+
+            @Override
+            public void windowClosed(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowIconified(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowDeiconified(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowActivated(WindowEvent e) {
+
+            }
+
+            @Override
+            public void windowDeactivated(WindowEvent e) {
+
+            }
+        });
         JPanel butPanel = new JPanel();
 
         JButton addButton = new JButton("Добавить книгу");
