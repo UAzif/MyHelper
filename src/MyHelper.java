@@ -7,26 +7,14 @@ import java.awt.event.WindowListener;
 import java.io.*;
 import java.util.ArrayList;
 
-//public class MyHelper {
-//}
 
-//import java.awt.*;
-//        import java.awt.event.ActionEvent;
-//        import java.awt.event.ActionListener;
-//        import java.awt.event.WindowEvent;
-//        import java.awt.event.WindowListener;
-//        import java.io.*;
-//        import java.util.ArrayList;
-//        import java.util.List;
-//
-//        import javax.swing.*;
 
 class MyHelper extends JFrame {
     private JTextField nameOfBook = new JTextField();
     private JTextField nameOfAutor = new JTextField();
     public ArrayList<String> books = new ArrayList<>();
     private static ArrayList<String> autros = new ArrayList<>();
-    public String book;
+    public String nameOfRemBook;
     final JPanel labPanel = new JPanel();
     //final JPanel butPanel = new JPanel();
     final JScrollPane scrollPane = new JScrollPane(labPanel);
@@ -150,6 +138,14 @@ class MyHelper extends JFrame {
             remButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
+                    nameOfRemBook=label.getText();
+                    for (int i=0;i<books.size();i++) {
+                        if (books.get(i) ==(nameOfRemBook)){
+                            books.remove(i);
+                        }
+                    }
+                    System.out.println("с панели удалена книга - "+ nameOfRemBook);
+                    System.out.println(String.join("-", books));
                     labPanel.remove(remButton);
                     labPanel.remove(label);
 
