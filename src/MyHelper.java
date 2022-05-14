@@ -1,4 +1,4 @@
-import javax.swing.*;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -7,16 +7,16 @@ import java.awt.event.WindowListener;
 import java.io.*;
 import java.util.ArrayList;
 
-
+import javax.swing.*;
 
 class MyHelper extends JFrame {
     private JTextField nameOfBook = new JTextField();
     private JTextField nameOfAutor = new JTextField();
     public ArrayList<String> books = new ArrayList<>();
     private static ArrayList<String> autros = new ArrayList<>();
-    public String nameOfRemBook;
+    public String book;
     final JPanel labPanel = new JPanel();
-    //final JPanel butPanel = new JPanel();
+    public String nameOfRemBook;
     final JScrollPane scrollPane = new JScrollPane(labPanel);
     final JFrame frame = new JFrame("Помощник библиотекаря");
     final Font font = new Font("Verdana", Font.PLAIN, 10);
@@ -89,20 +89,34 @@ class MyHelper extends JFrame {
             e.printStackTrace();
         }
     }
+    public void fillingFileFromBooksList() {
+        try {
+            FileWriter writer;
+            try {
+                writer = new FileWriter("books.txt", false);
+                for (String str : books) {
+                    writer.write(str + "\n");
+                }
+                writer.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } finally {
+        }
+    }
 
-    public void writeText() {
-        FileWriter writer;// = null;
+    public void clearBooksFile() {
+        FileWriter writer;
         try {
             writer = new FileWriter("books.txt", false);
-            for (String book : books) {
-                writer.write(book + " " + System.getProperty("line.separator"));
-            }
+            writer.write("");
             writer.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
-    public  void writeText(String book) {
+
+    public void writeText(String book) {
 
         FileWriter writer;
         try {
@@ -114,11 +128,12 @@ class MyHelper extends JFrame {
         }
     }
 
-    public void panelFilling() {
+    public void firstPanelFilling() {
         labPanel.removeAll();
         labPanel.repaint();
         labPanel.revalidate();
         readText();
+        // ferstFillingFileFromBooksList();
         frame.setVisible(true);
         frame.add(labPanel);
         labPanel.setLayout(new BoxLayout(labPanel, BoxLayout.Y_AXIS));
@@ -138,13 +153,16 @@ class MyHelper extends JFrame {
             remButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    nameOfRemBook=label.getText();
-                    for (int i=0;i<books.size();i++) {
-                        if (books.get(i) ==(nameOfRemBook)){
+                    nameOfRemBook = label.getText();
+                    for (int i = 0; i < books.size(); i++) {
+                        if (books.get(i).equals(nameOfRemBook)) {
                             books.remove(i);
                         }
                     }
-                    System.out.println("с панели удалена книга - "+ nameOfRemBook);
+                    // clearBooksFile();
+                    // readText();
+
+                    System.out.println("с панели удалена книга - " + nameOfRemBook);
                     System.out.println(String.join("-", books));
                     labPanel.remove(remButton);
                     labPanel.remove(label);
@@ -192,8 +210,11 @@ class MyHelper extends JFrame {
                         labPanel.removeAll();
                         labPanel.repaint();
                         labPanel.revalidate();
+                        fillingFileFromBooksList();
+                        // clearBooksFile();
+                        // readText();
 
-                        panelFilling();
+                        firstPanelFilling();
                         event.getWindow().setVisible(false);
                         frame.setVisible(true);
                     }
@@ -249,6 +270,7 @@ class MyHelper extends JFrame {
                         System.out.println(String.join("-", books));
                         System.out.print("Это AutorList - " + autros.size());
                         System.out.println(String.join("-", autros));
+
                     }
                 }
             });
@@ -264,12 +286,13 @@ class MyHelper extends JFrame {
             return dialog;
         }
     }
+
     public static void main(String[] args) {
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 JFrame.setDefaultLookAndFeelDecorated(true);
 
-                new MyHelper().panelFilling();
+                new MyHelper().firstPanelFilling();
             }
         });
     }
